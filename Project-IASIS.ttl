@@ -1,0 +1,5138 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rev: <http://purl.org/stuff/rev#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix base: <http://tib.de/ontario/mapping#> .
+@prefix iasis: <http://project-iasis.eu/vocab/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+
+<#DDI_CRD>
+	rml:logicalSource [ rml:source "data/drug/CRD.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{Drug1}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugDrugInteraction_sameCYP;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{Drug2}";
+		]
+	].
+
+<#DDI_NCRD>
+	rml:logicalSource [ rml:source "data/drug/NCRD.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{Drug1}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugDrugInteraction_noCYP;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{Drug2}";
+		]
+	].
+
+<#Drug>
+	rml:logicalSource [ rml:source "data/drug/LCdrugList.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{DrugBankID}";
+		rr:class iasis:LungCancerDrug
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugLabel;
+		rr:objectMap [
+			rml:reference "DrugName";
+		]
+	].
+
+<#Biomarker>
+	rml:logicalSource [ rml:source "data/drug/biomarkers.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Biomarker/{biomarker}";
+		rr:class iasis:Biomarker
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:biomarkerLabel;
+		rr:objectMap [ 
+			rml:reference "biomarker" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:biomarkerCuiID;
+		rr:objectMap [ 
+			rml:reference "biomarker_CUI" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/drug/biomarkers.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{biomarker_CUI}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "biomarker_CUI" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Drug_Biomarker>
+	rml:logicalSource [ rml:source "data/drug/biomarkers_drugs.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Biomarker/{biomarker}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:biomarker_has_indication;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{drugID}";
+		]
+	].
+
+<#Drug_Disorder>
+	rml:logicalSource [ rml:source "data/drug/drugs_indications.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{DrugId}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:isPrescribedFor;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Disorder/{indication_name}";
+		]
+	].
+
+<#Effect>
+	rml:logicalSource [ rml:source "data/drug/drugs_interactions.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Effect/{effect}";
+		rr:class iasis:Effect
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:effectLabel;
+		rr:objectMap [
+			rml:reference "effect"
+		]
+	].
+
+<#Impact>
+	rml:logicalSource [ rml:source "data/drug/drugs_interactions.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Impact/{property}";
+		rr:class iasis:Impact
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:impactLabel;
+		rr:objectMap [ 
+			rml:reference "property" 
+		]
+	].	
+
+<#EffectInteraction>
+	rml:logicalSource [ rml:source "data/drug/drugs_interactions.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/EffectInteraction/{Drug1}_interactsWith_{Drug2}";
+		rr:class iasis:EffectInteraction
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:affects;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{Drug1}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:isAffected;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{Drug2}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasEffect;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Effect/{effect}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasImpact;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Impact/{property}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/DrugBank"
+		]
+	].	
+
+<#DDI>
+	rml:logicalSource [ rml:source "data/drug/drugs_interactions.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{Drug1}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugDrugInteraction_drugBank;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{Drug2}";
+		]
+	].
+
+<#EffectInteraction>
+	rml:logicalSource [ rml:source "data/drug/wp4_drugs_drugs_interactions.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/EffectInteraction/{Drug1}_interactsWith_{Drug2}";
+		rr:class iasis:EffectInteraction
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:affects;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{Drug1}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:isAffected;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{Drug2}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/PubMed"
+		]
+	].
+
+<#DDI>
+	rml:logicalSource [ rml:source "data/drug/wp4_drugs_drugs_interactions.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{Drug1}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugDrugInteraction_pubMed;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{Drug2}";
+		]
+	].
+
+<#Interaction>
+	rml:logicalSource [ rml:source "data/drug/drug_enzyme_interaction.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{Drug_ID}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugEnzymeInteraction;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Enzyme/{Enzyme_name}" 
+		]
+	].
+
+<#DrugSideEffect_DSE>
+	rml:logicalSource [ rml:source "data/drug/drugs_side_effects.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/DrugSideEffect/{DrugID}_{name}";
+		rr:class iasis:DrugSideEffect
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:dse_AvgFrequency;
+		rr:objectMap [
+			rml:reference "AvgFrequency"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/SIDER"
+		]
+	].	
+
+<#Drug_DSE>
+	rml:logicalSource [ rml:source "data/drug/drugs_side_effects.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{DrugID}"
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drug_isRelatedTo_dse;
+		rr:objectMap [
+			rr:parentTriplesMap <#DrugSideEffect_DSE>
+		]
+	].
+
+<#SideEffect_DSE>
+	rml:logicalSource [ rml:source "data/drug/drugs_side_effects.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Phenotype/{name}"
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sideEffect_isRelatedTo_dse;
+		rr:objectMap [
+			rr:parentTriplesMap <#DrugSideEffect_DSE>
+		]
+	].	
+
+<#DrugTarget>
+	rml:logicalSource [ rml:source "data/drug/drug_target_interaction.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{Drug_ID}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugTargetInteraction;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Target/{Target_name}" 
+		]
+	].
+
+<#Drug>
+	rml:logicalSource [ rml:source "data/drug/CUI_DrugBank.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{DrugBankID}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/drug/CUI_DrugBank.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Drug>
+	rml:logicalSource [ rml:source "data/drug/drugs_dbpedia.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{DrugBankID}";
+		rr:class iasis:Drug
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugLabel;
+		rr:objectMap [
+			rml:reference "DrugName";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugBankID;
+		rr:objectMap [
+			rml:reference "DrugBankID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{DrugName}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:externalLink;
+		rr:objectMap [
+			rr:template "https://www.drugbank.ca/drugs/{DrugBankID}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "http://bio2rdf.org/drugbank:{DrugBankID}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "http://wifo5-04.informatik.uni-mannheim.de/drugbank/page/drugs/{DrugBankID}";
+		]
+	].
+
+<#Enzyme>
+	rml:logicalSource [ rml:source "data/drug/enzyme.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Enzyme/{Enzyme_name}";
+		rr:class iasis:Enzyme
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:enzymeLabel;
+		rr:objectMap [
+			rml:reference "Enzyme_name";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:enzymeID;
+		rr:objectMap [
+			rml:reference "Enzyme_ID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Protein/{Uni_ID}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:uniprotID;
+		rr:objectMap [
+			rml:reference "Uni_ID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:externalLink;
+		rr:objectMap [
+			rr:template "https://www.uniprot.org/uniprot/{Uni_ID}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:enzyme_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{Gene_name}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/drug/enzyme.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Disorder>
+	rml:logicalSource [ rml:source "data/drug/indication_CUI.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Disorder/{name}";
+		rr:class iasis:Disorder
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:disorderLabel;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{Dbpedia_URL}";
+		]
+	];		
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/drug/indication_CUI.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Target>
+	rml:logicalSource [ rml:source "data/drug/target.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Target/{Target_name}";
+		rr:class iasis:Target
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:targetLabel;
+		rr:objectMap [
+			rml:reference "Target_name";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:targetID;
+		rr:objectMap [
+			rml:reference "Target_ID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Protein/{Uni_ID}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:uniprotID;
+		rr:objectMap [
+			rml:reference "Uni_ID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:externalLink;
+		rr:objectMap [
+			rr:template "https://www.uniprot.org/uniprot/{Uni_ID}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:target_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{Gene_name}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/drug/target.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#DrugTumorStage>
+	rml:logicalSource [ rml:source "data/drug/stages_drugs.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/TumorStage/Stage{stage}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumorStage_has_indication;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{drugID}";
+		]
+	].
+
+<#DrugDrugPrediction>
+	rml:logicalSource [ rml:source "data/drug_predictions/drugs_interactions_predictions.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{Drug1}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drug_isPredictedToInteractWith_drug;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Drug/{Drug2}";
+		]
+	].
+
+<#DrugEnzymePrediction>
+	rml:logicalSource [ rml:source "data/drug_predictions/drug_enzyme_interaction_prediction.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{DrugID}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drug_isPredictedToInteractsWith_enzyme;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Enzyme/{Enzyme_name}";
+		]
+	].
+
+<#DrugTargetPrediction>
+	rml:logicalSource [ rml:source "data/drug_predictions/drug_target_interaction_prediction.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{DrugID}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drug_isPredictedToInteractsWith_target;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Target/{Target_name}" 
+		]
+	].
+
+<#Gene_CNV>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_cnv.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{gene_name}";
+		rr:class iasis:Gene;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneLabel;
+		rr:objectMap [
+			rml:reference "gene_name";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_isRelatedTo_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_CNV> 
+		]
+	].
+
+<#Sample_CNV>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_cnv.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Sample/{ID_SAMPLE}";
+		rr:class iasis:Sample;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleID;
+		rr:objectMap [
+			rml:reference "ID_SAMPLE";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleLabel;
+		rr:objectMap [
+			rml:reference "SAMPLE_NAME";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryTissue;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Tissue/{Primary site}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissueSubtype1;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SubTissue/{Site subtype 1}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryHistology;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueType/{Primary histology}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:histologySubtype1;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueSubType/{Histology subtype 1}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sample_isTakenFrom_tumor;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Tumor_CNV> 
+		]	
+	].
+
+<#Tumor_CNV>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_cnv.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Tumor/{ID_TUMOUR}";
+		rr:class iasis:Tumor;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumorID;
+		rr:objectMap [
+			rml:reference "ID_TUMOUR";
+		]
+	].
+
+<#CNV_CNV>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_cnv.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/CNV/{CNV_ID}";
+		rr:class iasis:CNV;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cnvID;
+		rr:objectMap [
+			rml:reference "CNV_ID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:total_cn;
+		rr:objectMap [ 
+			rml:reference "TOTAL_CN";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:minor_allele;
+		rr:objectMap [ 
+			rml:reference "MINOR_ALLELE";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cnv_chromosome;
+		rr:objectMap [ 
+			rml:reference "Chromosome";
+		]
+	];
+	rr:predicateObjectMap [ 
+		rr:predicate iasis:cnv_start;
+		rr:objectMap [ 
+			rml:reference "Start";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cnv_end;
+		rr:objectMap [ 
+			rml:reference "End"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cnv_studyID;
+		rr:objectMap [ 
+			rml:reference "ID_STUDY"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutationType;
+		rr:objectMap [
+			rml:reference "MUT_TYPE";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cnv_isLocatedIn_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_CNV> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cnv_isLocatedIn_gene;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Gene_CNV> 
+		]
+	].
+
+<#Gene_GE>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_geneExpression.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{GENE_NAME}";
+		rr:class iasis:Gene
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneLabel;
+		rr:objectMap [
+			rml:reference "GENE_NAME";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_isRelatedTo_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_GE> 
+		]
+	].
+
+<#Sample_GE>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_geneExpression.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Sample/{SAMPLE_ID}";
+		rr:class iasis:Sample
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleID;
+		rr:objectMap [
+			rml:reference "SAMPLE_ID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleLabel;
+		rr:objectMap [
+			rml:reference "SAMPLE_NAME"
+		]
+	].
+
+<#Gexp_GE>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_geneExpression.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/GExp/{SAMPLE_ID}_{GENE_NAME}";
+		rr:class iasis:GExp;
+	];
+
+	rr:predicateObjectMap [
+		rr:predicate iasis:z_score;
+		rr:objectMap [ 
+			rml:reference "Z_SCORE";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:regulation;
+		rr:objectMap [ 
+			rml:reference "REGULATION"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gexp_studyID;
+		rr:objectMap [ 
+			rml:reference "ID_STUDY";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gexp_isRelatedTo_gene;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Gene_GE> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gexp_isRelatedTo_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_GE> 
+		]
+	].
+
+<#Gene_Meth>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_methylation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{GENE_NAME}";
+		rr:class iasis:Gene
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneLabel;
+		rr:objectMap [
+			rml:reference "GENE_NAME";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_isRelatedTo_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_Meth> 
+		]
+	].
+
+<#Sample_Meth>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_methylation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Sample/{ID_SAMPLE}";
+		rr:class iasis:Sample
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleID;
+		rr:objectMap [
+			rml:reference "ID_SAMPLE";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleLabel;
+		rr:objectMap [
+			rml:reference "SAMPLE_NAME"];
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryTissue;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Tissue/{PRIMARY_SITE}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissueSubtype1;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/SubTissue/{SITE_SUBTYPE_1}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryHistology;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueType/{PRIMARY_HISTOLOGY}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:histologySubtype1;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueSubType/{HISTOLOGY_SUBTYPE_1}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sample_isTakenFrom_tumor;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Tumor_Meth> 
+		]
+	].
+
+<#Tumor_Meth>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_methylation.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Tumor/{ID_TUMOUR}";
+		rr:class iasis:Tumor;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumorID;
+		rr:objectMap [ 
+			rml:reference "ID_TUMOUR"; 
+		]
+	].
+
+<#CGI_Meth>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_methylation.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/CGI/{FRAGMENT_ID}";
+		rr:class iasis:CGI;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cgiID;
+		rr:objectMap [ 
+			rml:reference "FRAGMENT_ID";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:methylation;
+		rr:objectMap [ 
+			rml:reference "Methylation";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:beta_value;
+		rr:objectMap [ 
+			rml:reference "BETA_VALUE";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:avg_beta_value;
+		rr:objectMap [ 
+			rml:reference "AVG_BETA_VALUE_NORMAL";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:two_sided_p-value;
+		rr:objectMap [ 
+			rml:reference "TWO_SIDED_P_VALUE";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:methylation_genomicPosition;
+		rr:objectMap [ 
+			rml:reference "POSITION"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cgi_chromosome;
+		rr:objectMap [ 
+			rml:reference "CHROMOSOME"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cgi_studyID;
+		rr:objectMap [ 
+			rml:reference "STUDY_ID"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cgi_isLocatedIn_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_Meth> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:cgi_isLocatedIn_gene;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Gene_Meth> 
+		]
+	].
+
+<#Gene_Mu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_mutation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{Gene name}";
+		rr:class iasis:Gene
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneLabel;
+		rr:objectMap [
+			rml:reference "Gene name"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneHugoID;
+		rr:objectMap [
+			rml:reference "HGNC ID"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:cds_length;
+		rr:objectMap [ 
+			rml:reference "Gene CDS length" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_isRelatedTo_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_Mu> 
+		]
+	].
+
+<#Sample_Mu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_mutation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Sample/{ID_sample}";
+		rr:class iasis:Sample
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleLabel;
+		rr:objectMap [
+			rml:reference "Sample name"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleID;
+		rr:objectMap [
+			rml:reference "ID_sample"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleSource;
+		rr:objectMap [
+			rml:reference "Sample source"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleAge;
+		rr:objectMap [ 
+			rml:reference "Age" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryTissue;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Tissue/{Primary site}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissueSubtype1;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SubTissue/{Site subtype 1}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryHistology;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueType/{Primary histology}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:histologySubtype1;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueSubType/{Histology subtype 1}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sample_isTakenFrom_tumor;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Tumor_Mu>
+		]
+	].
+
+<#Tumor_Mu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_mutation.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Tumor/{ID_tumour}";
+		rr:class iasis:Tumor;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumorID;
+		rr:objectMap [
+			rml:reference "ID_tumour"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumor_origin;
+		rr:objectMap [ 
+			rml:reference "Tumour origin"
+		]
+	].
+
+<#Transcript_Mu>	
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_mutation.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{Accession Number}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "Accession Number"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{Gene name}"
+		]
+	].
+
+<#Mutation_Mu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_mutation.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Mutation/{Gene name}_{Mutation PepSeq}";
+		rr:class iasis:Mutation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutationID;
+		rr:objectMap [ 
+			rml:reference "Mutation ID"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutationLabel;
+		rr:objectMap [ 
+			rml:reference "Mutation PepSeq" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:zygosity;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Zygosity/{Mutation zygosity}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:loh;
+		rr:objectMap [ 
+			rml:reference "_LOH_"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:snp;
+		rr:objectMap [ 
+			rml:reference "_SNP_"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_aa;
+		rr:objectMap [ 
+			rml:reference "Mutation AA"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_cds;
+		rr:objectMap [ 
+			rml:reference "Mutation CDS"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:fathmm_prediction;
+		rr:objectMap [ 
+			rml:reference "FATHMM prediction"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:fathmm_score;
+		rr:objectMap [ 
+			rml:reference "FATHMM score" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_somatic_status;
+		rr:objectMap [ 
+			rml:reference "Mutation somatic status" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_NucleotideSeq;
+		rr:objectMap [ 
+			rml:reference "Mutation NucleotideSeq" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutationDescription;
+		rr:objectMap [
+			rml:reference "Mutation Description"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_chromosome;
+		rr:objectMap [ 
+			rml:reference "Chromosome" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_start;
+		rr:objectMap [ 
+			rml:reference "Start" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_end;
+		rr:objectMap [ 
+			rml:reference "End" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_strand;
+		rr:objectMap [ 
+			rml:reference "Mutation strand" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_studyID;
+		rr:objectMap [ 
+			rml:reference "ID_STUDY" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_mentionedIn_publication;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Publication_Mu>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_isLocatedIn_gene;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Gene_Mu> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_isLocatedIn_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_Mu> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_isLocatedIn_transcript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript_Mu>
+		]
+	].
+
+<#Publication_Mu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_mutation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{Pubmed_PMID}";
+		rr:class iasis:Publication;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [ 
+			rml:reference "Pubmed_PMID" 
+		]
+	].
+
+<#Gene_ResistanceMu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_resistanceMutation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{Gene Name}";
+		rr:class iasis:Gene
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_isRelatedTo_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_ResistanceMu> 
+		]
+	].
+
+<#Sample_ResistanceMu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_resistanceMutation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Sample/{Sample ID}";
+		rr:class iasis:Sample
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleLabel;
+		rr:objectMap [
+			rml:reference "Sample Name"];
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryTissue;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Tissue/{Primary Tissue}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissueSubtype1;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/SubTissue/{Tissue Subtype 1}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissueSubtype2;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/SubTissue/{Tissue Subtype 2}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:primaryHistology;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueType/{Histology}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:histologySubtype1;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TissueSubType/{Histology Subtype 1}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleSource;
+		rr:objectMap [ 
+			rml:reference "Sample Source";
+		]
+	].
+
+
+<#Mutation_ResistanceMu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_resistanceMutation.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Mutation/{Gene Name}_{Mutation PepSeq}";
+		rr:class iasis:Mutation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutationID;
+		rr:objectMap [ 
+			rml:reference "ID Mutation";
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutationLabel;
+		rr:objectMap [ 
+			rml:reference "Mutation PepSeq"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_aa;
+		rr:objectMap [ 
+			rml:reference "AA Mutation";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_cds;
+		rr:objectMap [ 
+			rml:reference "CDS Mutation";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_somatic_status;
+		rr:objectMap [ 
+			rml:reference "Somatic Status";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:zygosity;
+		rr:objectMap [ 
+			rml:reference "Zygosity";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_chromosome;
+		rr:objectMap [ 
+			rml:reference "Chromosome"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_start;
+		rr:objectMap [ 
+			rml:reference "Start"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_end;
+		rr:objectMap [ 
+			rml:reference "End"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_mentionedIn_publication;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Publication_ResistanceMu> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_isLocatedIn_gene;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Gene_ResistanceMu> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_isLocatedIn_sample;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Sample_ResistanceMu> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_isResistantTo_drug;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{Drugbank}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:mutation_isLocatedIn_transcript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript_ResistanceMu>
+		]
+	].
+
+<#Transcript_ResistanceMu>	
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_resistanceMutation.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{Transcript}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "Transcript"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{Gene Name}"
+		]
+	].
+
+<#Publication_ResistanceMu>
+	rml:logicalSource [ rml:source "data/genomic/COSMIC_resistanceMutation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{Pubmed Id}";
+		rr:class iasis:Publication
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [
+			rml:reference "Pubmed Id";
+		]
+	].
+
+<#Evidence>
+	rml:logicalSource [ rml:source "data/genomic/civic_Diagnostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Evidence/{evidence_id}";
+		rr:class iasis:Evidence
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_disorder;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Disorder> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceType;
+		rr:objectMap [ 
+			rml:reference "evidence_type" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceDirection;
+		rr:objectMap [ 
+			rml:reference "evidence_direction" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceLevel;
+		rr:objectMap [ 
+			rml:reference "evidence_level" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:clinicalSignificance;
+		rr:objectMap [ 
+			rml:reference "clinical_significance" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceStatement;
+		rr:objectMap [ 
+			rml:reference "evidence_statement" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_externalLink;
+		rr:objectMap [
+			rml:reference "evidence_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_mentionedIn_publication;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Publication>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_variation;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Variation> 
+		]
+	].		
+	
+<#Variation>
+	rml:logicalSource [ rml:source "data/genomic/civic_Diagnostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Variation/{variant.clinical}";
+		rr:class iasis:Variation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantLabel;
+		rr:objectMap [ 
+			rml:reference "variant.clinical" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_chromosome;
+		rr:objectMap [
+			rml:reference "chromosome.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_start;
+		rr:objectMap [
+			rml:reference "start.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_end;
+		rr:objectMap [
+			rml:reference "stop.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:originalBase;
+		rr:objectMap [
+			rml:reference "reference_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantBase;
+		rr:objectMap [
+			rml:reference "variant_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantSummary;
+		rr:objectMap [
+			rml:reference "variant_summary"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantOrigin;
+		rr:objectMap [
+			rml:reference "variant_origin"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantType;
+		rr:objectMap [
+			rml:reference "variant_types"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_externalLink;
+		rr:objectMap [
+			rml:reference "gene_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_transcript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript>
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype1}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype2}"
+		]
+	];		
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype3}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype4}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype5}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_externalLink;
+		rr:objectMap [
+			rml:reference "variant_civic_url.clinical"
+		]
+	].
+
+<#Disorder>
+	rml:logicalSource [ rml:source "data/genomic/civic_Diagnostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Disorder/{disease}";
+		rr:class iasis:Disorder
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:disorderLabel;
+		rr:objectMap [ 
+			rml:reference "disease" 
+		]
+	].
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/civic_Diagnostic.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{representative_transcript.clinical}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "representative_transcript.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	].				
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/genomic/civic_Diagnostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{citation_id}";
+		rr:class iasis:Publication;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [ 
+			rml:reference "citation_id" 
+		]
+	].
+
+<#Evidence>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predictive.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Evidence/{evidence_id}";
+		rr:class iasis:Evidence
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_disorder;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Disorder> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceType;
+		rr:objectMap [ 
+			rml:reference "evidence_type" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceDirection;
+		rr:objectMap [ 
+			rml:reference "evidence_direction" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceLevel;
+		rr:objectMap [ 
+			rml:reference "evidence_level" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:clinicalSignificance;
+		rr:objectMap [ 
+			rml:reference "clinical_significance" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceStatement;
+		rr:objectMap [ 
+			rml:reference "evidence_statement" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_externalLink;
+		rr:objectMap [
+			rml:reference "evidence_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_drug;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drug1}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_drug;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drug2}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_drug;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drug3}" 
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_drug;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drug4}" 
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_drug;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drug5}" 
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugInteractionType;
+		rr:objectMap [ 
+			rml:reference "drug_interaction_type" 
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_mentionedIn_publication;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Publication>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_variation;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Variation> 
+		]
+	].		
+	
+<#Variation>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predictive.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Variation/{variant.clinical}";
+		rr:class iasis:Variation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantLabel;
+		rr:objectMap [ 
+			rml:reference "variant.clinical" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantLabel;
+		rr:objectMap [ 
+			rml:reference "variant.clinical" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_chromosome;
+		rr:objectMap [
+			rml:reference "chromosome.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_start;
+		rr:objectMap [
+			rml:reference "start.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_end;
+		rr:objectMap [
+			rml:reference "stop.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:originalBase;
+		rr:objectMap [
+			rml:reference "reference_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantBase;
+		rr:objectMap [
+			rml:reference "variant_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantSummary;
+		rr:objectMap [
+			rml:reference "variant_summary"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantOrigin;
+		rr:objectMap [
+			rml:reference "variant_origin"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantType;
+		rr:objectMap [
+			rml:reference "variant_types"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_externalLink;
+		rr:objectMap [
+			rml:reference "gene_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_transcript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotypes}";
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_externalLink;
+		rr:objectMap [
+			rml:reference "variant_civic_url.clinical"
+		]
+	].
+
+<#Disorder>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predictive.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Disorder/{disease}";
+		rr:class iasis:Disorder
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:disorderLabel;
+		rr:objectMap [ 
+			rml:reference "disease" 
+		]
+	].
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/civic_Predictive.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{representative_transcript.clinical}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "representative_transcript.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	].
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predictive.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{citation_id}";
+		rr:class iasis:Publication;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [ 
+			rml:reference "citation_id" 
+		]
+	].
+
+<#Evidence>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predisposing.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Evidence/{evidence_id}";
+		rr:class iasis:Evidence
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_disorder;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Disorder> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceType;
+		rr:objectMap [ 
+			rml:reference "evidence_type" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceDirection;
+		rr:objectMap [ 
+			rml:reference "evidence_direction" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceLevel;
+		rr:objectMap [ 
+			rml:reference "evidence_level" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:clinicalSignificance;
+		rr:objectMap [ 
+			rml:reference "clinical_significance" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceStatement;
+		rr:objectMap [ 
+			rml:reference "evidence_statement" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_externalLink;
+		rr:objectMap [
+			rml:reference "evidence_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_mentionedIn_publication;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Publication>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_variation;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Variation> 
+		]
+	].		
+	
+<#Variation>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predisposing.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Variation/{variant.clinical}";
+		rr:class iasis:Variation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantLabel;
+		rr:objectMap [ 
+			rml:reference "variant.clinical" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_chromosome;
+		rr:objectMap [
+			rml:reference "chromosome.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_start;
+		rr:objectMap [
+			rml:reference "start.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_end;
+		rr:objectMap [
+			rml:reference "stop.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:originalBase;
+		rr:objectMap [
+			rml:reference "reference_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantBase;
+		rr:objectMap [
+			rml:reference "variant_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantSummary;
+		rr:objectMap [
+			rml:reference "variant_summary"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantOrigin;
+		rr:objectMap [
+			rml:reference "variant_origin"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantType;
+		rr:objectMap [
+			rml:reference "variant_types"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_externalLink;
+		rr:objectMap [
+			rml:reference "gene_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_transcript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript>
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype1}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype2}"
+		]
+	];		
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype3}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype4}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype5}"
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_externalLink;
+		rr:objectMap [
+			rml:reference "variant_civic_url.clinical"
+		]
+	].
+
+<#Disorder>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predisposing.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Disorder/{disease}";
+		rr:class iasis:Disorder
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:disorderLabel;
+		rr:objectMap [ 
+			rml:reference "disease" 
+		]
+	].
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/civic_Predisposing.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{representative_transcript.clinical}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "representative_transcript.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	].	
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/genomic/civic_Predisposing.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{citation_id}";
+		rr:class iasis:Publication;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [ 
+			rml:reference "citation_id" 
+		]
+	].
+
+<#Evidence>
+	rml:logicalSource [ rml:source "data/genomic/civic_Prognostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Evidence/{evidence_id}";
+		rr:class iasis:Evidence
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_disorder;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Disorder> 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceType;
+		rr:objectMap [ 
+			rml:reference "evidence_type" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceDirection;
+		rr:objectMap [ 
+			rml:reference "evidence_direction" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceLevel;
+		rr:objectMap [ 
+			rml:reference "evidence_level" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:clinicalSignificance;
+		rr:objectMap [ 
+			rml:reference "clinical_significance" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidenceStatement;
+		rr:objectMap [ 
+			rml:reference "evidence_statement" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_externalLink;
+		rr:objectMap [
+			rml:reference "evidence_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_mentionedIn_publication;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Publication>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:evidence_isRelatedTo_variation;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Variation> 
+		]
+	].		
+	
+<#Variation>
+	rml:logicalSource [ rml:source "data/genomic/civic_Prognostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Variation/{variant.clinical}";
+		rr:class iasis:Variation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantLabel;
+		rr:objectMap [ 
+			rml:reference "variant.clinical" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_chromosome;
+		rr:objectMap [
+			rml:reference "chromosome.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_start;
+		rr:objectMap [
+			rml:reference "start.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_end;
+		rr:objectMap [
+			rml:reference "stop.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:originalBase;
+		rr:objectMap [
+			rml:reference "reference_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantBase;
+		rr:objectMap [
+			rml:reference "variant_bases.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantSummary;
+		rr:objectMap [
+			rml:reference "variant_summary"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantOrigin;
+		rr:objectMap [
+			rml:reference "variant_origin"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantType;
+		rr:objectMap [
+			rml:reference "variant_types"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gene_externalLink;
+		rr:objectMap [
+			rml:reference "gene_civic_url"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_transcript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript>
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotypes}";
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_externalLink;
+		rr:objectMap [
+			rml:reference "variant_civic_url.clinical"
+		]
+	].
+
+<#Disorder>
+	rml:logicalSource [ rml:source "data/genomic/civic_Prognostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Disorder/{disease}";
+		rr:class iasis:Disorder
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:disorderLabel;
+		rr:objectMap [ 
+			rml:reference "disease" 
+		]
+	].
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/civic_Prognostic.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{representative_transcript.clinical}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "representative_transcript.clinical"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{gene.clinical}"
+		]
+	].
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/genomic/civic_Prognostic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{citation_id}";
+		rr:class iasis:Publication;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [ 
+			rml:reference "citation_id" 
+		]
+	].
+
+<#NucleotideSequence>
+	rml:logicalSource [ rml:source "data/genomic/clinvar.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/NucleotideSequence/{ncbiidshort}";
+		rr:class iasis:NucleotideSequence
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:nucleotideSequenceID;
+		rr:objectMap [
+			rml:reference "ncbiidshort"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:nucleotideSequenceLabel;
+		rr:objectMap [
+			rml:reference "name"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:nts_isRelatedTo_protein;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Protein/{acc}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:nts_isRelatedTo_transcript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:nts_has_variation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Variation>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:nts_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{symbol}"
+		]
+	].
+
+<#Variation>
+	rml:logicalSource [ rml:source "data/genomic/clinvar.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Variation/{dbsnp}";
+		rr:class iasis:Variation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:dbsnpID;
+		rr:objectMap [
+			rml:reference "dbsnp"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_chromosome;
+		rr:objectMap [
+			rml:reference "chr"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_site;
+		rr:objectMap [
+			rml:reference "site"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_origin;
+		rr:objectMap [
+			rml:reference "origin"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variant_genomicPosition;
+		rr:objectMap [
+			rml:reference "pos"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:originalNT;
+		rr:objectMap [
+			rml:reference "original"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantNT;
+		rr:objectMap [
+			rml:reference "variant"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:originalBase;
+		rr:objectMap [
+			rml:reference "originalbase"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variantBase;
+		rr:objectMap [
+			rml:reference "variantbase"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:clinicalSignificance;
+		rr:objectMap [
+			rml:reference "clinsig"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:clinicalSignificanceLabel;
+		rr:objectMap [
+			rml:reference "clin"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneticTest;
+		rr:objectMap [
+			rml:reference "genetictest"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype_label_1}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype_label_2}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype_label_3}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype_label_4}"; 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_has_phenotype;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Phenotype/{phenotype_label_5}"; 
+		]
+	].				
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/clinvar.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{enst}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "enst"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{symbol}"
+		]
+	].
+
+<#EQTL>
+	rml:logicalSource [ rml:source "data/genomic/eqtls_alzheimer_unique.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/EQTL/{upstream}eqtl{downstream}";
+		rr:class iasis:EQTL
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissue;
+		rr:objectMap [ 
+			rml:reference "tissue" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_upstreamGene;
+		rr:objectMap [
+			rr:parentTriplesMap <#Gene>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gexpChanges_occuredIn_downstreamTranscript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtlType;
+		rr:objectMap [ 
+			rml:reference "type" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:qvalue;
+		rr:objectMap [ 
+			rml:reference "log10q" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtl_has_variation;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Variation/{rsid}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtl_chromosome;
+		rr:objectMap [ 
+			rml:reference "chromo" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtl_position;
+		rr:objectMap [ 
+			rml:reference "pos" 
+		]
+	].
+
+<#Variation>
+	rml:logicalSource [ rml:source "data/genomic/eqtls_alzheimer_unique.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Variation/{rsid}";
+		rr:class iasis:Variation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sameAs;
+		rr:objectMap [
+			rr:template "http://bio2rdf.org/dbsnp:{rsid}"
+		]
+	].
+
+<#Gene>
+	rml:logicalSource [ rml:source "data/genomic/eqtls_alzheimer_unique.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{hgnc_symbol}"
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneENSG;
+		rr:objectMap [
+			rml:reference "upstream"
+		]
+	].
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/eqtls_alzheimer_unique.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{downstream}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "downstream"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{hgnc_symbol}"
+		]
+	].
+
+<#EQTL>
+	rml:logicalSource [ rml:source "data/genomic/eqtls_lung_unique.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/EQTL/{upstream}eqtl{downstream}";
+		rr:class iasis:EQTL
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissue;
+		rr:objectMap [ 
+			rml:reference "tissue" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:variation_isLocatedIn_upstreamGene;
+		rr:objectMap [
+			rr:parentTriplesMap <#Gene>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gexpChanges_occuredIn_downstreamTranscript;
+		rr:objectMap [
+			rr:parentTriplesMap <#Transcript>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtlType;
+		rr:objectMap [ 
+			rml:reference "type" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:qvalue;
+		rr:objectMap [ 
+			rml:reference "log10q" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtl_has_variation;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Variation/{rsid}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtl_chromosome;
+		rr:objectMap [ 
+			rml:reference "chromo" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:eqtl_position;
+		rr:objectMap [ 
+			rml:reference "pos" 
+		]
+	].
+
+<#Variation>
+	rml:logicalSource [ rml:source "data/genomic/eqtls_lung_unique.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Variation/{rsid}";
+		rr:class iasis:Variation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sameAs;
+		rr:objectMap [
+			rr:template "http://bio2rdf.org/dbsnp:{rsid}"
+		]
+	].
+
+<#Gene>
+	rml:logicalSource [ rml:source "data/genomic/eqtls_lung_unique.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{hgnc_symbol}"
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:geneENSG;
+		rr:objectMap [
+			rml:reference "upstream"
+		]
+	].
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/eqtls_lung_unique.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{downstream}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "downstream"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{hgnc_symbol}"
+		]
+	].
+
+<#Gene>
+	rml:logicalSource [ rml:source "data/genomic/CUI_HUGO.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{Gene}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/genomic/CUI_HUGO.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "Gene" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Gene>
+	rml:logicalSource [ rml:source "data/genomic/genes_HUGO_withoutDuplicates_DBpedia.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gene/{Gene}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DbpediaURL}";
+		]
+	].
+
+<#Protein>	
+	rml:logicalSource [ rml:source "data/genomic/interactions_physical_experimentally_determined_eclip.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Protein/{acc}";
+		rr:class iasis:Protein
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:proteinID;
+		rr:objectMap [
+			rml:reference "acc"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:constant "http://project-iasis.eu/SourceName/Uniprots";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:protein_isRelatedTo_physicalInteraction;
+		rr:objectMap [
+			rr:parentTriplesMap <#PhysicalInteraction>
+		]
+	].	
+
+<#Transcript>	
+	rml:logicalSource [ rml:source "data/genomic/interactions_physical_experimentally_determined_eclip.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Transcript/{enst}";
+		rr:class iasis:Transcript
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcriptID;
+		rr:objectMap [
+			rml:reference "enst"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_gene;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gene/{symbol}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:transcript_isRelatedTo_physicalInteraction;
+		rr:objectMap [
+			rr:parentTriplesMap <#PhysicalInteraction>
+		]
+	].
+
+<#PhysicalInteraction>	
+	rml:logicalSource [ rml:source "data/genomic/interactions_physical_experimentally_determined_eclip.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/RBP_RNA_PhysicalInteraction/{acc}_{enst}";
+		rr:class iasis:RBP_RNA_PhysicalInteraction
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:omixcore;
+		rr:objectMap [
+			rml:reference "omixcore"
+		]
+	].
+
+<#Phenotype>
+	rml:logicalSource [ rml:source "data/genomic/phenotype.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Phenotype/{Label}";
+		rr:class iasis:Phenotype 	
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:phenotypeLabel;
+		rr:objectMap [
+			rml:reference "Label"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation1>
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasHPOAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation2>
+		]
+	].
+
+<#Annotation1>
+	rml:logicalSource [ rml:source "data/genomic/phenotype.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].	
+
+<#Annotation2>
+	rml:logicalSource [ rml:source "data/genomic/phenotype.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{HPOid}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "HPOid" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/HPO"
+		]
+	].
+
+<#TissueSubType>
+	rml:logicalSource [ rml:source "data/genomic/sample_histologySubtype1.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/TissueSubType/{Histology subtype 1}";
+		rr:class iasis:TissueSubType;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:TissueSubTypeLabel;
+		rr:objectMap [
+			rml:reference "Histology subtype 1"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/genomic/sample_histologySubtype1.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "Histology subtype 1" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#TissueType>
+	rml:logicalSource [ rml:source "data/genomic/sample_primaryHistology.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/TissueType/{Histology}";
+		rr:class iasis:TissueType;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissueTypeLabel;
+		rr:objectMap [
+			rml:reference "Histology"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/genomic/sample_primaryHistology.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "Histology" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Tissue>
+	rml:logicalSource [ rml:source "data/genomic/sample_primaryTissue.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Tissue/{Primary Tissue}";
+		rr:class iasis:Tissue;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tissueLabel;
+		rr:objectMap [
+			rml:reference "Primary Tissue"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/genomic/sample_primaryTissue.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "Primary Tissue" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#SubTissue>
+	rml:logicalSource [ rml:source "data/genomic/sample_tissueSubtype2.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/SubTissue/{Tissue Subtype 2}";
+		rr:class iasis:SubTissue;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:subTissueLabel;
+		rr:objectMap [
+			rml:reference "Tissue Subtype 2"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/genomic/sample_tissueSubtype2.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "Tissue Subtype 2" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#SubTissue>
+	rml:logicalSource [ rml:source "data/genomic/sample_tissueSubtype1.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/SubTissue/{Site subtype 1}";
+		rr:class iasis:SubTissue;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:subTissueLabel;
+		rr:objectMap [
+			rml:reference "Site subtype 1"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/genomic/sample_tissueSubtype1.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "Site subtype 1" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Zygosity>
+	rml:logicalSource [ rml:source "data/genomic/sample_zygosity.csv";
+						rml:referenceFormulation ql:CSV ];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Zygosity/{Zygosity}";
+		rr:class iasis:Zygosity;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:zygosityLabel;
+		rr:objectMap [
+			rml:reference "Zygosity"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/genomic/sample_zygosity.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "Zygosity" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#BodyPartExamined>
+	rml:logicalSource [ rml:source "data/lc_images/bodyPartExamined.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/BodyPartExamined/{concept}";
+		rr:class iasis:BodyPartExamined;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:bodyPartExaminedLabel;
+		rr:objectMap [
+			rml:reference "concept";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_images/bodyPartExamined.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{cui}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "cui" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].	
+
+<#Diagnosis>
+	rml:logicalSource [ rml:source "data/lc_images/diagnose.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Diagnosis/{ENG_CUI_Name}";
+		rr:class iasis:Diagnosis;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:diagnosisLabel;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_images/diagnose.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{cui}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "cui" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "concept" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].	
+
+<#Gender>
+	rml:logicalSource [ rml:source "data/lc_images/gender.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gender/{concept}";
+		rr:class iasis:Gender;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:genderLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "concept" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_images/gender.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{cui}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "cui" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#PatientImage>
+	rml:logicalSource [ rml:source "data/lc_images/patient_images.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasImage;
+		rr:objectMap [
+			rr:parentTriplesMap <#Image>
+		]
+	].
+<#Image>
+	rml:logicalSource [ rml:source "data/lc_images/patient_images.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCImage/{patient_id}_{image_id}";
+		rr:class iasis:LCImage
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:imageType;
+		rr:objectMap [
+			rml:reference "type";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:modality;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Modality/{modality}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:manufacturer;
+		rr:objectMap [
+			rml:reference "manufacturer";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:studyDescription;
+		rr:objectMap [
+			rml:reference "studyDescription";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:bodyPartExamined;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/BodyPartExamined/{bodyPartExamined}";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:sliceThickness;
+		rr:objectMap [
+			rml:reference "sliceThickness";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:protocolName;
+		rr:objectMap [
+			rml:reference "protocolName";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:patientPosition;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/PatientPosition/{patientPosition}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:rows;
+		rr:objectMap [
+			rml:reference "rows";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:columns;
+		rr:objectMap [
+			rml:reference "columns";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pixelSpacingX;
+		rr:objectMap [
+			rml:reference "pixelSpacingX";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pixelSpacingY;
+		rr:objectMap [
+			rml:reference "pixelSpacingY";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:bitsAllocated;
+		rr:objectMap [
+			rml:reference "bitsAllocated";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:bitsStored;
+		rr:objectMap [
+			rml:reference "bitsStored";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:highBit;
+		rr:objectMap [
+			rml:reference "highBit";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:rescaleIntercept;
+		rr:objectMap [
+			rml:reference "rescaleIntercept";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:rescaleSlope;
+		rr:objectMap [
+			rml:reference "rescaleSlope";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:huphm;
+		rr:objectMap [
+			rml:reference "huphm";
+		]
+	].
+
+<#LungLaterality>
+	rml:logicalSource [ rml:source "data/lc_images/lungLaterality.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LungLaterality/{concept}";
+		rr:class iasis:LungLaterality;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:lungLateralityLabel;
+		rr:objectMap [
+			rml:reference "concept";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_images/lungLaterality.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{cui}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "cui" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Modality>
+	rml:logicalSource [ rml:source "data/lc_images/modality.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Modality/{concept}";
+		rr:class iasis:Modality;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:modalityLabel;
+		rr:objectMap [
+			rml:reference "concept";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_images/modality.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{cui}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "cui" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#ImageOrgan>
+	rml:logicalSource [ rml:source "data/lc_images/patient_images_organs.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCImage/{patientId}_{imageId}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasOrgans;
+		rr:objectMap [
+			rr:parentTriplesMap <#Organ>
+		]
+	].
+<#Organ>
+	rml:logicalSource [ rml:source "data/lc_images/patient_images_organs.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Organ/{patientId}_{imageId}_{id}";
+		rr:class iasis:Organ;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:lungLaterality;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/LungLaterality/{lungLaterality}";
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_images/patients.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{id}";
+		rr:class iasis:LCPatient
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gender;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gender/{gender}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDiagnosis_imageBased;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Diagnosis/{diagnose}";
+		]
+	].
+
+<#PatientPosition>
+	rml:logicalSource [ rml:source "data/lc_images/patientPosition.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/PatientPosition/{concept}";
+		rr:class iasis:PatientPosition;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:patientPositionLabel;
+		rr:objectMap [
+			rml:reference "concept";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_images/patientPosition.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{cui}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "cui" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].	
+
+<#Drug>
+	rml:logicalSource [ rml:source "data/lc_notes/chemotherapyList.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{ENG_CUI_Name}";
+		rr:class iasis:Drug;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/chemotherapyList.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Disorder>
+	rml:logicalSource [ rml:source "data/lc_notes/comorbidities.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Disorder/{ENG_CUI_Name}";
+		rr:class iasis:Disorder;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:disorderLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/comorbidities.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#DrugGroup>
+	rml:logicalSource [ rml:source "data/lc_notes/drugGroups.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/DrugGroup/{ENG_Name}";
+		rr:class iasis:DrugGroup;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugGroupLabel;
+		rr:objectMap [ 
+			rml:reference "ENG_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugGroupLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	].
+
+<#FamiliarAntecedent>
+	rml:logicalSource [ rml:source "data/lc_notes/familialAntecedentsList.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/FamiliarAntecedent/{ENG_CUI_Name}";
+		rr:class iasis:FamiliarAntecedent;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:familiarAntecedentLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/familialAntecedentsList.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Gender>
+	rml:logicalSource [ rml:source "data/lc_notes/gender.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Gender/{name}";
+		rr:class iasis:Gender;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:genderLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/gender.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].	
+
+<#Drug>
+	rml:logicalSource [ rml:source "data/lc_notes/immunotherapyList.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{ENG_CUI_Name}";
+		rr:class iasis:Drug;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/immunotherapyList.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Drug>
+	rml:logicalSource [ rml:source "data/lc_notes/nonOncologycalTreatments.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{ENG_CUI_Name}";
+		rr:class iasis:Drug;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/nonOncologycalTreatments.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].	
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patients.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{id}";
+		rr:class iasis:LCPatient
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:gender;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Gender/{gender}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumorType;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/TumorType/{tumorType}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:smoker;
+		rr:objectMap [
+			rml:reference "smoker";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:biomarkers;
+		rr:objectMap [
+			rml:reference "biomarkers";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:bioEgfr;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Biomarker/{bioEgfr}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:bioAlk;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Biomarker/{bioAlk}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:bioRos1;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Biomarker/{bioRos1}";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:chemotherapy;
+		rr:objectMap [
+			rml:reference "chemotherapy";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tki;
+		rr:objectMap [
+			rml:reference "tki";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:immunotherapy;
+		rr:objectMap [
+			rml:reference "immunotherapy";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:antiangiogentic;
+		rr:objectMap [
+			rml:reference "antiangiogenic";
+		]
+	]; 
+	rr:predicateObjectMap [
+		rr:predicate iasis:radiationtherapy;
+		rr:objectMap [
+			rml:reference "radiationtherapy";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:surgery;
+		rr:objectMap [
+			rml:reference "surgery";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:familiarAntecedents;
+		rr:objectMap [
+			rml:reference "familialAntecedents";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:systemicProgression;
+		rr:objectMap [
+			rml:reference "systemicProgression";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:localProgression;
+		rr:objectMap [
+			rml:reference "localProgression";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:brainMetastasis;
+		rr:objectMap [
+			rml:reference "brainMetastasis";
+		]
+	];
+		rr:predicateObjectMap [
+		rr:predicate iasis:survivalMonths;
+		rr:objectMap [
+			rml:reference "survivalMonths";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDiagnosis;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#Diagnosis>
+		]
+	].
+<#Diagnosis>
+	rml:logicalSource [ rml:source "data/lc_notes/patients.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Diagnosis/{id}";
+		rr:class iasis:Diagnosis;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDiagnosisTumorStage;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/TumorStage/Stage{stageAtDiagnosis}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDiagnosisTumorType;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/TumorType/{tumorType}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDiagnosisDate;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Date/{diagnosisDate}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDiagnosisAge;
+		rr:objectMap [ 
+			rml:reference "ageAtDiagnosis";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDiagnosisPerformanceStatus;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/PerformanceStatus/status{performanceStatusAtDiagnosis}";
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_immunotherapyList.csv";
+						rml:referenceFormulation ql:CSV; 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasImmunotherapy;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drugName}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_biopsia.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasLiquidBiopsy;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#LiquidBiopsy>
+		]
+	].
+
+<#LiquidBiopsy>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_biopsia.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LiquidBiopsy/{patient_id}_{biopsia_id}";
+		rr:class iasis:LiquidBiopsy;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:sampleDate;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/LCPatient/Date/{sampleDate}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:resultDate;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/LCPatient/Date/{resultsDate}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasMutation;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Mutation/{mutation}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:targetTotal;
+		rr:objectMap [ 
+			rml:reference "targetTotal"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:copiesMicroliterFam;
+		rr:objectMap [ 
+			rml:reference "copiesMicroliterFam"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:copiesMicroliterVic;
+		rr:objectMap [ 
+			rml:reference "copiesMicroliterVic"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_chemotherapyList.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasChemotherapy;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drugName}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_Comorbidities.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasComorbidity;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Disorder/{disorderName}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_drugGroups.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDrugGroup;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/DrugGroup/{concept}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_familialAntecedentsList.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasFamiliarAntecedent;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/FamiliarAntecedent/{name}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/list.csv";
+						rml:referenceFormulation ql:CSV
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{ids}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:chemotherapyList;
+		rr:objectMap [
+			rml:reference "chemotherapyList";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:immunotherapyList;
+		rr:objectMap [
+			rml:reference "immunotherapyList";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tkiList;
+		rr:objectMap [
+			rml:reference "tkiList";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:comorbidityList;
+		rr:objectMap [	
+			rml:reference "comorbidities";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugGroupList;
+		rr:objectMap [
+			rml:reference "drugs";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:biopsyList;
+		rr:objectMap [
+			rml:reference "biopsy";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:ecogList;
+		rr:objectMap [
+			rml:reference "ecog";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:stageList;
+		rr:objectMap [
+			rml:reference "stage";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:familialAntecedentList;
+		rr:objectMap [
+			rml:reference "familial_antecedent_list";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:nonOncologicalTreatmentList;
+		rr:objectMap [
+			rml:reference "non_oncologycal_treatme";
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_nonOncologycalTreatments.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDrug;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drugName}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_performanceStatus.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasPerformanceObservation;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#PerformanceObservation>
+		]
+	].
+
+<#PerformanceObservation>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_performanceStatus.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/PerformanceObservation/{patient_id}_{id}";
+		rr:class iasis:PerformanceObservation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasPerformanceStatus;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/PerformanceStatus/status{value}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDate;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Date/{date}"
+		]
+	].
+
+
+<#PatientSimilarity>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_similarity.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/PatientSimilarity/{patient_id1}and{patient_id2}";
+		rr:class iasis:PatientSimilarity
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:isBetweenPatients;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/LCPatient/{patient_id1}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:isBetweenPatients;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/LCPatient/{patient_id2}" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:similarityValue;
+		rr:objectMap [ 
+			rml:reference "similarityValue" 
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_stages.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasTumorObservation;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#TumorObservation>
+		]
+	].	
+<#TumorObservation>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_stages.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/TumorObservation/{patient_id}_{stage_id}";
+		rr:class iasis:TumorObservation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasTumorStage;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/TumorStage/Stage{stage}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDate;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Date/{date}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_tkiList.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasTki;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Drug/{drugName}"
+		]
+	].
+
+<#LCPatient>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_toxicities.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/LCPatient/{patient_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasToxicityObservation;
+		rr:objectMap [ 
+			rr:parentTriplesMap <#ToxicityObservation>
+		]
+	].	
+<#ToxicityObservation>
+	rml:logicalSource [ rml:source "data/lc_notes/patient_toxicities.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/ToxicityObservation/{patient_id}_{toxicity_id}";
+		rr:class iasis:ToxicityObservation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasToxicity;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Phenotype/{toxicity_concept}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasDate;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Date/{date}"
+		]
+	].
+
+<#TumorStage>
+	rml:logicalSource [ rml:source "data/lc_notes/stages.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/TumorStage/Stage{name}";
+		rr:class iasis:TumorStage;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumorStageLabel;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/stages.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Drug>
+	rml:logicalSource [ rml:source "data/lc_notes/tkiList.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Drug/{ENG_CUI_Name}";
+		rr:class iasis:Drug;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:drugLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/tkiList.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Toxicity>
+	rml:logicalSource [ rml:source "data/lc_notes/toxicities.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Phenotype/{ENG_CUI_Name}";
+		rr:class iasis:Phenotype;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:toxicityLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/toxicities.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#TumorType>
+	rml:logicalSource [ rml:source "data/lc_notes/tumorTypes.csv";
+						rml:referenceFormulation ql:CSV;
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/TumorType/{ENG_CUI_Name}";
+		rr:class iasis:TumorType;
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:tumorTypeLabel_ENG;
+		rr:objectMap [ 
+			rml:reference "ENG_CUI_Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:secondTumorTypeLabel;
+		rr:objectMap [ 
+			rml:reference "type" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate owl:sameAs;
+		rr:objectMap [
+			rr:template "{DBpediaURL}";
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasCUIAnnotation;
+		rr:objectMap [
+			rr:parentTriplesMap <#Annotation>
+		]
+	].	
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/lc_notes/tumorTypes.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{CUI_ID}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "CUI_ID" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel_SPA;
+		rr:objectMap [ 
+			rml:reference "Name" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Annotations_Relation>
+	rml:logicalSource [ rml:source "data/pub/relationships.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/{Relationship_Type}/{First_id}_{Relationship_Type}_{Second_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdf:type;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/vocab/{Relationship_Type}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:confidence;
+		rr:objectMap [ 
+			rml:reference "Confidence" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:negation;
+		rr:objectMap [ 
+			rml:reference "Negation" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:relation_isRelatedTo_annotation;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Annotation/{First_id}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:relation_isRelatedTo_annotation;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Annotation/{Second_id}"
+		]
+	].
+
+<#Relation_Publication>
+	rml:logicalSource [ rml:source "data/pub/relation_publication.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/{Relationship_Type}/{CUI_1}_{Relationship_Type}_{CUI_2}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:relation_isRelatedTo_publication;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Publication/{Resources}"
+		]
+	].
+
+<#Annotation>
+	rml:logicalSource [ rml:source "data/pub/annotation.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Annotation/{id}";
+		rr:class iasis:Annotation
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annID;
+		rr:objectMap [ 
+			rml:reference "id" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annLabel;
+		rr:objectMap [ 
+			rml:reference "label" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:semanticType;
+		rr:objectMap [ 
+			rml:reference "semantic_types" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:provenance;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/SourceName/UMLS"
+		]
+	].
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/pub/authors.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Author/{author}";
+		rr:class iasis:Author
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:authorName;
+		rr:objectMap [ 
+			rml:reference "author" 
+		]
+	].
+
+<#HasTopic>
+	rml:logicalSource [ rml:source "data/pub/has_topic.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/HAS_TOPIC/{subject}_HAS_TOPIC_{object}";
+		rr:class iasis:HAS_TOPIC
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:confidence;
+		rr:objectMap [ 
+			rml:reference "confidence" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasAnnotation;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Annotation/{object}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annotates;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Publication/{subject}"
+		]
+	].
+
+<#MentionedIn>
+	rml:logicalSource [ rml:source "data/pub/mentioned_in.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/MENTIONED_IN/{subject}_MENTIONED_IN_{object}";
+		rr:class iasis:MENTIONED_IN
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:confidence;
+		rr:objectMap [ 
+			rml:reference "confidence" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:hasAnnotation;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Annotation/{subject}"
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:annotates;
+		rr:objectMap [
+			rr:template "http://project-iasis.eu/Publication/{object}"
+		]
+	].
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/pub/publication_AD.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{pmid}";
+		rr:class iasis:Publication
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:title;
+		rr:objectMap [ 
+			rml:reference "title" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [ 
+			rml:reference "pmid" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:year;
+		rr:objectMap [ 
+			rml:reference "year" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:journal;
+		rr:objectMap [ 
+			rml:reference "journal" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:rankingScore_SJR;
+		rr:objectMap [ 
+			rml:reference "journal_SJR" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:rankingScore_hIndex;
+		rr:objectMap [ 
+			rml:reference "journal_hIndex" 
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:publicationType;
+		rr:objectMap [ 
+			rml:reference "PublicationTypes" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:authorAffiliation;
+		rr:objectMap [ 
+			rml:reference "Affiliations" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:publication_isRelatedTo_Disease;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Disorder/Alzheimer"; 
+		]
+	].
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/pub/publication_LC.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{pmid}";
+		rr:class iasis:Publication
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:title;
+		rr:objectMap [ 
+			rml:reference "title" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:pubmedID;
+		rr:objectMap [ 
+			rml:reference "pmid" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:year;
+		rr:objectMap [ 
+			rml:reference "year" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:journal;
+		rr:objectMap [ 
+			rml:reference "journal" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:rankingScore_SJR;
+		rr:objectMap [ 
+			rml:reference "journal_SJR" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:rankingScore_hIndex;
+		rr:objectMap [ 
+			rml:reference "journal_hIndex" 
+		]
+	];	
+	rr:predicateObjectMap [
+		rr:predicate iasis:publicationType;
+		rr:objectMap [ 
+			rml:reference "PublicationTypes" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:authorAffiliation;
+		rr:objectMap [ 
+			rml:reference "Affiliations" 
+		]
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:publication_isRelatedTo_Disease;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Disorder/LungCancer"; 
+		]
+	].
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/pub/publication_AD_authors.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{pmid}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:author;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Author/{author}" 
+		]
+	].
+
+<#Publication>
+	rml:logicalSource [ rml:source "data/pub/publication_LC_authors.csv";
+						rml:referenceFormulation ql:CSV 
+						];
+	rr:subjectMap [
+		rr:template "http://project-iasis.eu/Publication/{pmid}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate iasis:author;
+		rr:objectMap [ 
+			rr:template "http://project-iasis.eu/Author/{author}" 
+		]
+	].
+
