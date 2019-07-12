@@ -1,0 +1,352 @@
+testid	result
+RMLTC0000-CSV	passed
+RMLTC0000-JSON	passed
+RMLTC0000-XML inapplicable
+RMLTC0000-MySQL	passed
+RMLTC0000-PostgreSQL passed	
+RMLTC0000-SQLServer	
+RMLTC0000-SPARQL inapplicable	
+RMLTC0001a-CSV	passed
+RMLTC0001a-JSON	passed
+RMLTC0001a-XML inapplicable
+RMLTC0001a-MySQL	passed
+RMLTC0001a-PostgreSQL passed
+RMLTC0001a-SQLServer	
+RMLTC0001a-SPARQL	inapplicable
+RMLTC0001b-CSV	passed
+RMLTC0001b-JSON	passed
+RMLTC0001b-XML inapplicable
+RMLTC0001b-MySQL	passed
+RMLTC0001b-PostgreSQL	passed
+RMLTC0001b-SQLServer	
+RMLTC0001b-SPARQL	inapplicable
+RMLTC0002a-CSV	passed
+RMLTC0002a-JSON	passed
+RMLTC0002a-XML inapplicable
+RMLTC0002a-MySQL	passed
+RMLTC0002a-PostgreSQL	passed
+RMLTC0002a-SQLServer	
+RMLTC0002a-SPARQL	inapplicable
+RMLTC0002b-CSV	passed
+RMLTC0002b-JSON	passed
+RMLTC0002b-XML inapplicable
+RMLTC0002b-MySQL	passed
+RMLTC0002b-PostgreSQL	passed
+RMLTC0002b-SQLServer	
+RMLTC0002b-SPARQL	inapplicable
+RMLTC0002c-CSV	failed
+RMLTC0002c-JSON	failed
+RMLTC0002c-XML inapplicable
+RMLTC0002c-MySQL	failed
+RMLTC0002c-PostgreSQL	failed	
+RMLTC0002c-SQLServer	
+RMLTC0002d-MySQL passed	
+RMLTC0002d-PostgreSQL passed
+RMLTC0002d-SQLServer	
+RMLTC0002e-CSV	failed
+RMLTC0002e-JSON	failed
+RMLTC0002e-XML inapplicable
+RMLTC0002e-MySQL	failed
+RMLTC0002e-PostgreSQL failed
+RMLTC0002e-SQLServer 
+RMLTC0002f-MySQL	failed
+RMLTC0002f-PostgreSQL failed
+RMLTC0002f-SQLServer	
+RMLTC0002g-MySQL	failed
+RMLTC0002g-PostgreSQL failed
+RMLTC0002g-SQLServer	
+RMLTC0002g-SPARQL	inapplicable
+RMLTC0002h-MySQL	failed
+RMLTC0002h-PostgreSQL	failed
+RMLTC0002h-SQLServer	
+RMLTC0002h-SPARQL	inapplicable
+RMLTC0002i-MySQL	passed
+RMLTC0002i-PostgreSQL	passed	
+RMLTC0002i-SQLServer	
+RMLTC0002j-MySQL	passed
+RMLTC0002j-PostgreSQL passed
+RMLTC0002j-SQLServer	
+RMLTC0003a-MySQL	failed
+RMLTC0003a-PostgreSQL	failed
+RMLTC0003a-SQLServer	
+RMLTC0003b-MySQL	passed
+RMLTC0003b-PostgreSQL passed
+RMLTC0003b-SQLServer	
+RMLTC0003c-CSV	passed
+RMLTC0003c-JSON	passed
+RMLTC0003c-XML inapplicable
+RMLTC0003c-MySQL	passed
+RMLTC0003c-PostgreSQL	passed
+RMLTC0003c-SQLServer	
+RMLTC0003c-SPARQL	inapplicable
+RMLTC0004a-CSV	passed
+RMLTC0004a-JSON	passed
+RMLTC0004a-XML inapplicable	inaplicable
+RMLTC0004a-MySQL  passed	
+RMLTC0004a-PostgreSQL	passed
+RMLTC0004a-SQLServer	
+RMLTC0004a-SPARQL	inapplicable
+RMLTC0004b-CSV	passed
+RMLTC0004b-JSON	passed
+RMLTC0004b-XML inapplicable
+RMLTC0004b-MySQL	passed
+RMLTC0004b-PostgreSQL	passed
+RMLTC0004b-SQLServer	
+RMLTC0004b-SPARQL	inapplicable
+RMLTC0005a-CSV	passed
+RMLTC0005a-JSON	passed
+RMLTC0005a-XML inapplicable
+RMLTC0005a-MySQL	passed
+RMLTC0005a-PostgreSQL	passed
+RMLTC0005a-SQLServer	
+RMLTC0005b-MySQL	passed
+RMLTC0005b-PostgreSQL	passed
+RMLTC0005b-SQLServer	
+RMLTC0006a-CSV	inapplicable
+RMLTC0006a-JSON	inapplicable
+RMLTC0006a-XML inapplicable
+RMLTC0006a-MySQL	inapplicable
+RMLTC0006a-PostgreSQL  inapplicable
+RMLTC0006a-SQLServer   inapplicable
+RMLTC0006a-SPARQL	inaplicable
+RMLTC0007a-CSV	passed
+RMLTC0007a-JSON	passed
+RMLTC0007a-XML inapplicable
+RMLTC0007a-MySQL	passed
+RMLTC0007a-PostgreSQL	passed
+RMLTC0007a-SQLServer	
+RMLTC0007a-SPARQL	inapplicable
+RMLTC0007b-CSV	passed
+RMLTC0007b-JSON	passed
+RMLTC0007b-XML inapplicable
+RMLTC0007b-MySQL	inapplicable
+RMLTC0007b-PostgreSQL	inapplicable
+RMLTC0007b-SQLServer	
+RMLTC0007b-SPARQL	inapplicable
+RMLTC0007c-CSV	passed
+RMLTC0007c-JSON	passed
+RMLTC0007c-XML inapplicable
+RMLTC0007c-MySQL	passed
+RMLTC0007c-PostgreSQL	passed
+RMLTC0007c-SQLServer	
+RMLTC0007c-SPARQL	inapplicable
+RMLTC0007d-CSV	passed
+RMLTC0007d-JSON	passed
+RMLTC0007d-XML inapplicable
+RMLTC0007d-MySQL passed
+RMLTC0007d-PostgreSQL	passed
+RMLTC0007d-SQLServer	
+RMLTC0007d-SPARQL	inapplicable
+RMLTC0007e-CSV	inapplicable
+RMLTC0007e-JSON	inapplicable
+RMLTC0007e-XML inapplicable	
+RMLTC0007e-MySQL	inapplicable
+RMLTC0007e-PostgreSQL	inapplicable	
+RMLTC0007e-SQLServer	
+RMLTC0007e-SPARQL	ianpplicable
+RMLTC0007f-CSV	inapplicable
+RMLTC0007f-JSON		inapplicable
+RMLTC0007f-XML inapplicable	
+RMLTC0007f-MySQL	inapplicable
+RMLTC0007f-PostgreSQL	inapplicable
+RMLTC0007f-SQLServer	
+RMLTC0007f-SPARQL	inapplicable
+RMLTC0007g-CSV	passed
+RMLTC0007g-JSON	passed
+RMLTC0007g-XML inapplicable	
+RMLTC0007g-MySQL	passed
+RMLTC0007g-PostgreSQL	passed
+RMLTC0007g-SQLServer	
+RMLTC0007g-SPARQL	inapplicable
+RMLTC0007h-CSV	passed
+RMLTC0007h-JSON	passed
+RMLTC0007h-XML inapplicable	
+RMLTC0007h-MySQL	failed
+RMLTC0007h-PostgreSQL	failed
+RMLTC0007h-SQLServer	
+RMLTC0007h-SPARQL	inapplicable
+RMLTC0008a-CSV	failed
+RMLTC0008a-JSON	failed
+RMLTC0008a-XML inapplicable	
+RMLTC0008a-MySQL	inapplicable
+RMLTC0008a-PostgreSQL	inapplicable
+RMLTC0008a-SQLServer	
+RMLTC0008a-SPARQL	inapplicable
+RMLTC0008b-CSV	passed
+RMLTC0008b-JSON	passed
+RMLTC0008b-XML inapplicable	
+RMLTC0008b-MySQL	passed
+RMLTC0008b-PostgreSQL passed
+RMLTC0008b-SQLServer	
+RMLTC0008b-SPARQL	inapplicable
+RMLTC0008c-CSV	passed
+RMLTC0008c-JSON	passed
+RMLTC0008c-XML inapplicable	
+RMLTC0008c-MySQL	passed
+RMLTC0008c-PostgreSQL	passed
+RMLTC0008c-SQLServer	
+RMLTC0008c-SPARQL	inapplicable
+RMLTC0009a-CSV	passed
+RMLTC0009a-JSON	passed
+RMLTC0009a-XML inapplicable	
+RMLTC0009a-MySQL	passed
+RMLTC0009a-PostgreSQl	passed
+RMLTC0009a-SQLServer	
+RMLTC0009a-SPARQL	inapplicable
+MRMLTC0009b-CSV	failed
+RMLTC0009b-JSON	failed
+RMLTC0009b-XML inapplicable	
+RMLTC0009b-MySQL	inapplicable	
+RMLTC0009b-PostgreSQL	inapplicable		
+RMLTC0009b-SQLServer	
+RMLTC0009b-SPARQL	inapplicable
+RMLTC0009c-MySQL	passed
+RMLTC0009c-PostgreSQL	passed
+RMLTC0009c-SQLServer	
+RMLTC0009d-MySQL	passed
+RMLTC0009d-PostgreSQL	passed
+RMLTC0009d-SQLServer	
+RMLTC0010a-CSV	passed
+RMLTC0010a-JSON	passed
+RMLTC0010a-MySQL	passed
+RMLTC0010a-PostgreSQL	passed
+RMLTC0010a-SQLServer	
+RMLTC0010b-CSV	passed
+RMLTC0010b-JSON	passed
+RMLTC0010b-XML inapplicable	
+RMLTC0010b-MySQL	passed
+RMLTC0010b-PostgreSQL	passed
+RMLTC0010b-SQLServer	
+RMLTC0010c-CSV	inapplicable
+RMLTC0010c-JSON	inapplicable
+RMLTC0010c-XML inapplicable	
+RMLTC0010c-MySQL	inapplicable	
+RMLTC0010c-PostgreSQL	inapplicable	
+RMLTC0010c-SQLServer	
+RMLTC0011a-MySQL	passed
+RMLTC0011a-PostgreSQL	passed
+RMLTC0011a-SQLServer	
+RMLTC0011b-CSV	passed
+RMLTC0011b-JSON	passed
+RMLTC0011b-XML inapplicable	
+RMLTC0011b-MySQL	passed
+RMLTC0011b-PostgreSQL	passed
+RMLTC0011b-SQLServer	
+RMLTC0012a-CSV	passed
+RMLTC0012a-JSON	passed
+RMLTC0012a-XML inapplicable	
+RMLTC0012a-MySQL	passed
+RMLTC0012a-PostgreSQL	passed
+RMLTC0012a-SQLServer	
+RMLTC0012a-SPARQL	inapplicable
+RMLTC0012b-CSV	passed
+RMLTC0012b-JSON	passed
+RMLTC0012b-XML inapplicable	
+RMLTC0012b-MySQL	passed
+RMLTC0012b-PostgreSQL	passed
+RMLTC0012b-SQLServer	
+RMLTC0012b-SPARQL	inapplicable
+RMLTC0012c-CSV		passed
+RMLTC0012c-JSON		passed
+RMLTC0012c-XML 	inapplicable
+RMLTC0012c-MySQL 	passed	
+RMLTC0012d-CSV		passed
+RMLTC0012d-JSON		passed
+RMLTC0012d-XML inapplicable	
+RMLTC0012d-MySQL 	passed
+RMLTC0012e-MySQL 	passed	
+RMLTC0012e-PostgreSQL	passed
+RMLTC0012e-SQLServer	
+RMLTC0013a-JSON		passed
+RMLTC0013a-MySQL	passed
+RMLTC0013a-PostgreSQL	passed	
+RMLTC0013a-SQLServer	
+RMLTC0014d-MySQL	passed
+RMLTC0014d-PostgreSQL	passed
+RMLTC0014d-SQLServer	
+RMLTC0015a-CSV	passed
+RMLTC0015a-JSON	passed
+RMLTC0015a-XML inapplicable	
+RMLTC0015a-MySQL	passed
+RMLTC0015a-PostgreSQL	passed
+RMLTC0015a-SQLServer	
+RMLTC0015b-CSV	passed
+RMLTC0015b-JSON		passed
+RMLTC0015b-XML inapplicable	
+RMLTC0015b-MySQL	passed
+RMLTC0015b-PostgreSQL	passed
+RMLTC0015b-SQLServer	
+RMLTC0016a-MySQL	passed
+RMLTC0016a-PostgreSQL	passed
+RMLTC0016a-SQLServer	
+RMLTC0016b-MySQL	passed
+RMLTC0016b-PostgreSQL	passed
+RMLTC0016b-SQLServer	
+RMLTC0016c-MySQL	passed
+RMLTC0016c-PostgreSQL	passed
+RMLTC0016c-SQLServer	
+RMLTC0016d-MySQL	passed
+RMLTC0016d-PostgreSQL	passed
+RMLTC0016d-SQLServer	
+RMLTC0016e-MySQL	passed
+RMLTC0016e-PostgreSQL	passed
+RMLTC0016e-SQLServer	
+RMLTC0018a-MySQL	passed
+RMLTC0018a-PostgreSQL	passed
+RMLTC0018a-SQLServer	
+RMLTC0019a-CSV	passed
+RMLTC0019a-JSON	passed
+RMLTC0019a-XML inapplicable	
+RMLTC0019a-MySQL	passed
+RMLTC0019a-PostgreSQL	passed
+RMLTC0019a-SQLServer	
+RMLTC0019b-CSV	passed
+RMLTC0019b-JSON	passed
+RMLTC0019b-XML inapplicable	
+RMLTC0019b-MySQL	passed
+RMLTC0019-PostgreSQL	passed
+RMLTC0019b-SQLServer	
+RMLTC0020a-CSV	passed
+RMLTC0020a-JSON	passed
+RMLTC0020a-XML inapplicable	
+RMLTC0020a-MySQL	passed
+RMLTC0020a-PostgreSQL	passed
+RMLTC0020a-SQLServer	passed
+RMLTC0020b-CSV	passed
+RMLTC0020b-JSON	passed
+RMLTC0020b-XML inapplicable	
+RMLTC0020b-MySQL	passed
+RMLTC0020b-PostgreSQL	
+RMLTC0020b-SQLServer	
+RMLTC1001-JSON	TBD
+RMLTC1001-XML inapplicable	TBD
+RMLTC1002-JSON	TBD
+RMLTC1002-XML inapplicable	TBD
+RMLTC1003-CSV	TBD
+RMLTC1004-CSV	TBD
+RMLTC1005a-CSV	TBD
+RMLTC1005a-JSON	TBD
+RMLTC1005a-XML inapplicable	TBD
+RMLTC1005a-MySQL	TBD
+RMLTC1005a-PostgreSQL	TBD
+RMLTC1005a-SQLServer	TBD
+RMLTC1005b-CSV	TBD
+RMLTC1005b-JSON	TBD
+RMLTC1005b-XML inapplicable	TBD
+RMLTC1005b-MySQL	TBD
+RMLTC1005b-PostgreSQL	TBD
+RMLTC1005b-SQLServer	TBD
+RMLTC1006-XML inapplicable	TBD
+RMLTC1007-CSV	TBD
+RMLTC1007-JSON	TBD
+RMLTC1007-XML inapplicable	TBD
+RMLTC1007-MySQL	TBD
+RMLTC1007-PostgreSQL	TBD
+RMLTC1007-SQLServer	TBD
+RMLTC1008-CSV	TBD
+RMLTC1008-JSON	TBD
+RMLTC1008-XML inapplicable	TBD
+RMLTC1008-MySQL	TBD
+RMLTC1008-PostgreSQL	TBD
+RMLTC1008-SQLServer	TBD
+RMLTC1009-JSON

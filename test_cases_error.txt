@@ -1,0 +1,12 @@
+7h makes reference to Name where there is no Name attribute in the raw data
+8b missing rdf prefix
+9a missing rdfs prefix
+9b missing rdfs prefix
+10a the attibute "Country Code" cannot have a space in it (MySql and PostgreSql)
+10b the attibute "Country Code" cannot have a space in it (MySql and PostgreSql)
+10c the attibute "Country Code" cannot have a space in it (MySql and PostgreSql)
+13a rr:ObjectMap when it should be rml:ObjectMap
+15a missing rdfs prefix
+    TripleMap2 query all attributes are quoted (MySql and PostgreSql)
+
+docker exec -it bc43b9d36238 psql -U postgres
