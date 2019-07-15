@@ -251,6 +251,7 @@ RMLTC0012c-CSV,passed
 RMLTC0012c-JSON,passed
 RMLTC0012c-XML,inapplicable
 RMLTC0012c-MySQL,passed
+RMLTC0012c-PostgreSQL,passed
 RMLTC0012c-SQLServer,passed
 RMLTC0012d-CSV,passed
 RMLTC0012d-JSON,passed
