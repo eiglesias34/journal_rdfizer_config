@@ -39,7 +39,7 @@ RMLTC0002c-JSON,failed
 RMLTC0002c-XML,inapplicable
 RMLTC0002c-MySQL,failed
 RMLTC0002c-PostgreSQL,failed	
-RMLTC0002c-SQLServer,passed	
+RMLTC0002c-SQLServer,failed
 RMLTC0002d-MySQL,passed	
 RMLTC0002d-PostgreSQL,passed
 RMLTC0002d-SQLServer,passed	
