@@ -48,7 +48,7 @@ RMLTC0002e-JSON,failed
 RMLTC0002e-XML,inapplicable
 RMLTC0002e-MySQL,failed
 RMLTC0002e-PostgreSQL,failed
-RMLTC0002e-SQLServer,passed 
+RMLTC0002e-SQLServer,failed
 RMLTC0002f-MySQL,failed
 RMLTC0002f-PostgreSQL,failed
 RMLTC0002f-SQLServer,passed	
