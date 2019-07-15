@@ -1,4 +1,4 @@
-testid	result
+testid,result
 RMLTC0000-CSV,passed
 RMLTC0000-JSON,passed
 RMLTC0000-XML,inapplicable
