@@ -1,12 +1,43 @@
-7h makes reference to Name where there is no Name attribute in the raw data
-8b missing rdf prefix
-9a missing rdfs prefix
-9b missing rdfs prefix
-10a the attibute "Country Code" cannot have a space in it (MySql and PostgreSql)
-10b the attibute "Country Code" cannot have a space in it (MySql and PostgreSql)
-10c the attibute "Country Code" cannot have a space in it (MySql and PostgreSql)
-13a rr:ObjectMap when it should be rml:ObjectMap
-15a missing rdfs prefix
+RMLTC0007h-CSV makes reference to Name where there is no Name attribute in the raw data
+RMLTC0007h-JSON makes reference to Name where there is no Name attribute in the raw data
+RMLTC0007h-XML makes reference to Name where there is no Name attribute in the raw data
+RMLTC0007h-MySQL makes reference to Name where there is no Name attribute in the raw data
+RMLTC0007h-PostgreSQL makes reference to Name where there is no Name attribute in the raw data
+RMLTC0007h-SQLServer makes reference to Name where there is no Name attribute in the raw data
+RMLTC0007h-SPARQL makes reference to Name where there is no Name attribute in the raw data
+RMLTC0008b-CSV missing rdf prefix
+RMLTC0008b-JSON missing rdf prefix
+RMLTC0008b-XML missing rdf prefix
+RMLTC0008b-MySQL missing rdf prefix
+RMLTC0008b-PostgreSQL missing rdf prefix
+RMLTC0008b-SQLServer missing rdf prefix
+RMLTC0008b-SPARQL missing rdf prefix
+RMLTC0009a-CSV missing rdfs prefix
+RMLTC0009a-JSON missing rdfs prefix
+RMLTC0009a-XML missing rdfs prefix
+RMLTC0009a-MySQL missing rdfs prefix
+RMLTC0009a-PostgreSQL missing rdfs prefix
+RMLTC0009a-SQLServer missing rdfs prefix
+RMLTC0009a-SPARQL missing rdfs prefix
+RMLTC0009b-CSV missing rdfs prefix
+RMLTC0009b-JSON missing rdfs prefix
+RMLTC0009b-XML missing rdfs prefix
+RMLTC0009b-MySQL missing rdfs prefix
+RMLTC0009b-PostgreSQL missing rdfs prefix
+RMLTC0009b-SQLServer missing rdfs prefix
+RMLTC0009b-SPARQL missing rdfs prefix
+RMLTC0013a-JSON rr:ObjectMap when it should be rml:ObjectMap
+RMLTC0013a-MySQL rr:ObjectMap when it should be rml:ObjectMap
+RMLTC0013a-PostgreSQL rr:ObjectMap when it should be rml:ObjectMap
+RMLTC0013a-SQLServer rr:ObjectMap when it should be rml:ObjectMap
+RMLTC0015a-CSV missing rdfs prefix
+RMLTC0015a-JSON missing rdfs prefix
+RMLTC0015a-XML missing rdfs prefix
+RMLTC0015a-MySQL missing rdfs prefix
+    TripleMap2 query all attributes are quoted (MySql and PostgreSql)
+RMLTC0015a-PostgreSQL missing rdfs prefix
+    TripleMap2 query all attributes are quoted (MySql and PostgreSql)
+RMLTC0015a-SQLServer missing rdfs prefix
     TripleMap2 query all attributes are quoted (MySql and PostgreSql)
 
 docker exec -it bc43b9d36238 psql -U postgres
